@@ -1,0 +1,672 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Source+Sans+3:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Base styles */
+body {
+  font-family: 'Source Sans 3', sans-serif;
+  background-color: #F5F7FA;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ============================================
+   CINEMATIC EFFECTS
+   ============================================ */
+
+/* Film Strip Decoration */
+.film-strip {
+  position: relative;
+}
+
+.film-strip::before,
+.film-strip::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 10px;
+  background: 
+    repeating-linear-gradient(
+      to bottom,
+      #1a1a1a 0px,
+      #1a1a1a 6px,
+      transparent 6px,
+      transparent 10px
+    );
+  z-index: 20;
+}
+
+.film-strip::before {
+  left: 0;
+  border-right: 1px solid #333;
+}
+
+.film-strip::after {
+  right: 0;
+  border-left: 1px solid #333;
+}
+
+/* Sprocket holes */
+.sprocket-holes {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  padding: 4px 0;
+  z-index: 25;
+}
+
+.sprocket-holes.left { left: 0px; }
+.sprocket-holes.right { right: 0px; }
+
+.sprocket-hole {
+  width: 6px;
+  height: 6px;
+  background: #000;
+  border-radius: 1px;
+  margin: 0 auto;
+}
+
+/* Spotlight/Projection Effect */
+.spotlight {
+  position: relative;
+  overflow: hidden;
+}
+
+.spotlight::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: 50%;
+  width: 200%;
+  height: 200%;
+  background: conic-gradient(
+    from 180deg at 50% 50%,
+    transparent 0deg,
+    rgba(255, 255, 255, 0.03) 15deg,
+    rgba(255, 255, 255, 0.08) 30deg,
+    rgba(255, 255, 255, 0.03) 45deg,
+    transparent 60deg,
+    transparent 360deg
+  );
+  transform: translateX(-50%);
+  animation: spotlight-sweep 8s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 5;
+}
+
+@keyframes spotlight-sweep {
+  0%, 100% { transform: translateX(-50%) rotate(0deg); }
+  50% { transform: translateX(-50%) rotate(30deg); }
+}
+
+/* SF Fog Effect */
+.fog-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 100;
+  overflow: hidden;
+}
+
+.fog-layer {
+  position: absolute;
+  width: 200%;
+  height: 100%;
+  background: url("data:image/svg+xml,%3Csvg viewBox='0 0 800 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='fog'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.01' numOctaves='3' seed='1'/%3E%3CfeDisplacementMap in='SourceGraphic' scale='50'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23fog)' fill='%23E8EDF2' opacity='0.3'/%3E%3C/svg%3E");
+  opacity: 0.15;
+  animation: fog-drift 60s linear infinite;
+}
+
+.fog-layer:nth-child(2) {
+  animation-duration: 45s;
+  animation-direction: reverse;
+  opacity: 0.1;
+}
+
+@keyframes fog-drift {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* Vignette Effect */
+.vignette {
+  position: relative;
+}
+
+.vignette::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 40%,
+    rgba(0, 0, 0, 0.4) 100%
+  );
+  pointer-events: none;
+}
+
+/* ============================================
+   3D TILT CARD EFFECT
+   ============================================ */
+
+.card-3d {
+  perspective: 1000px;
+  transform-style: preserve-3d;
+}
+
+.card-3d-inner {
+  transition: transform 0.3s ease-out;
+  transform-style: preserve-3d;
+}
+
+.card-3d:hover .card-3d-inner {
+  transform: rotateY(-5deg) rotateX(5deg) scale(1.02);
+}
+
+/* Shine/Glare Effect */
+.card-shine {
+  position: relative;
+  overflow: hidden;
+}
+
+.card-shine::before {
+  content: '';
+  position: absolute;
+  top: -100%;
+  left: -100%;
+  width: 50%;
+  height: 200%;
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(255, 255, 255, 0.3) 50%,
+    transparent 100%
+  );
+  transform: rotate(25deg);
+  transition: all 0.6s ease;
+  opacity: 0;
+  z-index: 10;
+}
+
+.card-shine:hover::before {
+  left: 150%;
+  opacity: 1;
+}
+
+/* Golden Ticket Shine */
+.golden-shine {
+  position: relative;
+  overflow: hidden;
+}
+
+.golden-shine::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(212, 175, 55, 0.4),
+    transparent
+  );
+  animation: golden-sweep 3s ease-in-out infinite;
+}
+
+@keyframes golden-sweep {
+  0% { left: -100%; }
+  50%, 100% { left: 100%; }
+}
+
+/* ============================================
+   MARQUEE / NOW SHOWING
+   ============================================ */
+
+.marquee-lights {
+  position: relative;
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+  border: 3px solid #D4AF37;
+  box-shadow: 
+    inset 0 2px 10px rgba(0,0,0,0.5),
+    0 0 20px rgba(212, 175, 55, 0.3);
+}
+
+.marquee-lights::before {
+  content: '● ● ● ● ● ● ● ● ● ● ● ● ● ● ●';
+  position: absolute;
+  top: -12px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 8px;
+  letter-spacing: 8px;
+  color: #D4AF37;
+  text-shadow: 0 0 10px #D4AF37;
+  animation: marquee-blink 1.5s ease-in-out infinite;
+}
+
+.marquee-lights::after {
+  content: '● ● ● ● ● ● ● ● ● ● ● ● ● ● ●';
+  position: absolute;
+  bottom: -12px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 8px;
+  letter-spacing: 8px;
+  color: #D4AF37;
+  text-shadow: 0 0 10px #D4AF37;
+  animation: marquee-blink 1.5s ease-in-out infinite 0.75s;
+}
+
+@keyframes marquee-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* Scrolling Text */
+.marquee-scroll {
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.marquee-scroll-inner {
+  display: inline-block;
+  animation: marquee-scroll 20s linear infinite;
+}
+
+@keyframes marquee-scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* ============================================
+   SCROLL ANIMATIONS
+   ============================================ */
+
+.reveal-on-scroll {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.reveal-on-scroll.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal-scale {
+  opacity: 0;
+  transform: scale(0.9);
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.reveal-scale.revealed {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Staggered children */
+.stagger-children > * {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.4s ease-out;
+}
+
+.stagger-children.revealed > *:nth-child(1) { transition-delay: 0ms; opacity: 1; transform: translateY(0); }
+.stagger-children.revealed > *:nth-child(2) { transition-delay: 50ms; opacity: 1; transform: translateY(0); }
+.stagger-children.revealed > *:nth-child(3) { transition-delay: 100ms; opacity: 1; transform: translateY(0); }
+.stagger-children.revealed > *:nth-child(4) { transition-delay: 150ms; opacity: 1; transform: translateY(0); }
+.stagger-children.revealed > *:nth-child(5) { transition-delay: 200ms; opacity: 1; transform: translateY(0); }
+.stagger-children.revealed > *:nth-child(6) { transition-delay: 250ms; opacity: 1; transform: translateY(0); }
+
+/* ============================================
+   TICKET STUB CARD
+   ============================================ */
+
+.ticket-stub {
+  position: relative;
+  background: white;
+  border-radius: 12px;
+  overflow: visible;
+}
+
+.ticket-stub::before {
+  content: '';
+  position: absolute;
+  left: -8px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 16px;
+  background: #F5F7FA;
+  border-radius: 50%;
+}
+
+.ticket-stub::after {
+  content: '';
+  position: absolute;
+  right: -8px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 16px;
+  background: #F5F7FA;
+  border-radius: 50%;
+}
+
+.ticket-stub-dashed {
+  border-left: 2px dashed #E8EDF2;
+  margin-left: 12px;
+  padding-left: 12px;
+}
+
+/* ============================================
+   BOKEH LIGHTS
+   ============================================ */
+
+.bokeh-bg {
+  position: relative;
+  overflow: hidden;
+}
+
+.bokeh-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: 
+    radial-gradient(circle at 20% 30%, rgba(196, 70, 58, 0.3) 0%, transparent 25%),
+    radial-gradient(circle at 80% 20%, rgba(212, 175, 55, 0.2) 0%, transparent 20%),
+    radial-gradient(circle at 60% 70%, rgba(255, 107, 74, 0.25) 0%, transparent 30%),
+    radial-gradient(circle at 30% 80%, rgba(30, 58, 95, 0.2) 0%, transparent 25%);
+  animation: bokeh-float 10s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes bokeh-float {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(10px, -10px) scale(1.05); }
+  66% { transform: translate(-5px, 5px) scale(0.98); }
+}
+
+/* ============================================
+   COUNTDOWN LEADER
+   ============================================ */
+
+.countdown-circle {
+  width: 60px;
+  height: 60px;
+  border: 3px solid #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Playfair Display', serif;
+  font-size: 24px;
+  font-weight: bold;
+  color: #fff;
+  animation: countdown-pulse 1s ease-in-out infinite;
+}
+
+@keyframes countdown-pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.1); opacity: 0.8; }
+}
+
+/* ============================================
+   FLIP CARD
+   ============================================ */
+
+.flip-card {
+  perspective: 1000px;
+  cursor: pointer;
+}
+
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+}
+
+.flip-card.flipped .flip-card-inner {
+  transform: rotateY(180deg);
+}
+
+.flip-card-front,
+.flip-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.flip-card-back {
+  transform: rotateY(180deg);
+}
+
+/* Typography */
+.display-text {
+  font-family: 'Playfair Display', serif;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #C4463A;
+  border-radius: 4px;
+}
+
+/* Hide scrollbar for horizontal scroll areas */
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Card styles with tighter spacing */
+@layer components {
+  .card-base {
+    @apply bg-white rounded-xl shadow-elevated overflow-hidden transition-all duration-300;
+  }
+
+  .card-hover {
+    @apply hover:shadow-elevated-lg hover:-translate-y-0.5;
+  }
+
+  .card-film {
+    @apply relative overflow-hidden rounded-xl bg-sf-charcoal;
+  }
+
+  .card-film::after {
+    content: '';
+    @apply absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent;
+  }
+
+  /* Buttons */
+  .btn-primary {
+    @apply px-4 py-2.5 bg-sf-red text-white font-semibold rounded-lg 
+           transition-all duration-200 hover:bg-sf-coral active:scale-95;
+  }
+
+  .btn-secondary {
+    @apply px-4 py-2.5 bg-sf-navy text-white font-semibold rounded-lg 
+           transition-all duration-200 hover:bg-sf-navy/90 active:scale-95;
+  }
+
+  .btn-ghost {
+    @apply px-4 py-2.5 bg-white/10 backdrop-blur-sm text-white font-semibold rounded-lg 
+           border border-white/20 transition-all duration-200 hover:bg-white/20 active:scale-95;
+  }
+
+  .btn-outline {
+    @apply px-4 py-2.5 bg-transparent text-sf-red font-semibold rounded-lg 
+           border-2 border-sf-red transition-all duration-200 hover:bg-sf-red hover:text-white active:scale-95;
+  }
+
+  /* Badges */
+  .badge-rating {
+    @apply inline-flex items-center gap-1 px-2 py-0.5 bg-black/60 backdrop-blur-sm 
+           text-white text-xs font-semibold rounded-full;
+  }
+
+  .badge-featured {
+    @apply px-2 py-0.5 bg-sf-gold text-sf-charcoal text-[10px] font-bold 
+           tracking-wider rounded-full uppercase;
+  }
+
+  .badge-category {
+    @apply px-2.5 py-1 bg-sf-fog text-sf-navy text-xs font-semibold rounded-full;
+  }
+
+  /* Glass effect */
+  .glass {
+    @apply bg-white/80 backdrop-blur-lg;
+  }
+
+  .glass-dark {
+    @apply bg-sf-charcoal/80 backdrop-blur-lg;
+  }
+
+  /* Gradients */
+  .gradient-hero {
+    background: linear-gradient(180deg, rgba(30, 58, 95, 0) 0%, rgba(30, 58, 95, 0.9) 100%);
+  }
+
+  .gradient-sunset {
+    background: linear-gradient(135deg, #C4463A 0%, #FF6B4A 100%);
+  }
+
+  .gradient-navy {
+    background: linear-gradient(135deg, #1E3A5F 0%, #2D5A87 100%);
+  }
+
+  /* Film grain texture overlay */
+  .film-grain {
+    position: relative;
+  }
+
+  .film-grain::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    opacity: 0.03;
+    pointer-events: none;
+  }
+
+  /* Cable car pattern */
+  .cable-pattern {
+    background-image: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(255,255,255,0.03) 2px,
+      rgba(255,255,255,0.03) 4px
+    );
+  }
+
+  /* Input styles */
+  .input-field {
+    @apply w-full px-4 py-3 bg-white border border-sf-fog rounded-lg text-sf-navy 
+           placeholder-sf-slate/50 focus:outline-none focus:border-sf-red focus:ring-2 
+           focus:ring-sf-red/20 transition-all duration-200;
+  }
+
+  /* Section spacing - tighter layout */
+  .section-tight {
+    @apply px-3 py-4;
+  }
+
+  .section-normal {
+    @apply px-4 py-5;
+  }
+
+  /* Tile grid with reduced gaps */
+  .tile-grid-tight {
+    @apply grid gap-2;
+  }
+
+  .tile-grid-normal {
+    @apply grid gap-3;
+  }
+
+  /* Horizontal scroll with tight spacing */
+  .scroll-tight {
+    @apply flex gap-2 overflow-x-auto hide-scrollbar pb-1;
+  }
+
+  .scroll-normal {
+    @apply flex gap-3 overflow-x-auto hide-scrollbar pb-2;
+  }
+}
+
+/* Animation delays */
+.delay-100 { animation-delay: 100ms; }
+.delay-200 { animation-delay: 200ms; }
+.delay-300 { animation-delay: 300ms; }
+.delay-400 { animation-delay: 400ms; }
+.delay-500 { animation-delay: 500ms; }
+
+/* Line clamp utilities */
+.line-clamp-1 {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* White overlay effect */
+.white-overlay {
+  position: relative;
+}
+
+.white-overlay::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.6) 100%);
+  pointer-events: none;
+}
