@@ -154,7 +154,7 @@ export default function Membership() {
               }`}
               style={{ 
                 
-                transitionDelay: `${index * 50}ms`
+                transitionDelay: "0ms"
               }}
             >
               {/* Popular badge */}
