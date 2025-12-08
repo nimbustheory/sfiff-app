@@ -1,4 +1,4 @@
-import { Calendar, MapPin, Ticket, Star, Film, Award, ChevronRight } from 'lucide-react';
+import { Calendar, MapPin, Ticket, Star, Film, Award } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 export default function Festival() {

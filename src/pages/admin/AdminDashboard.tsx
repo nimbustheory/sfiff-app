@@ -2,7 +2,7 @@ import { Film, Ticket, Users, DollarSign, TrendingUp, Calendar, Clock, ArrowUpRi
 import { useAdmin } from '../../contexts/AdminContext';
 
 export default function AdminDashboard() {
-  const { movies, showtimes, events } = useAdmin();
+  const { movies } = useAdmin();
 
   const stats = [
     { 

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Home, Film, Calendar, Ticket, User, MoreHorizontal, X, PartyPopper, Star, HelpCircle, Info } from 'lucide-react';
+import { Home, Film, Calendar, User, MoreHorizontal, X, PartyPopper, Star, HelpCircle, Info } from 'lucide-react';
 
 export default function Navigation() {
   const navigate = useNavigate();

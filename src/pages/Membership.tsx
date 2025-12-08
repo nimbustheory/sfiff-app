@@ -118,7 +118,7 @@ export default function Membership() {
       >
         <h2 className="display-text text-lg text-sf-navy mb-4 text-center">Member Benefits</h2>
         <div className="grid grid-cols-3 gap-2 stagger-children revealed">
-          {BENEFITS.map(({ icon: Icon, title, desc }, index) => (
+          {BENEFITS.map(({ icon: Icon, title, desc }) => (
             <div 
               key={title}
               className="bg-white p-3 rounded-xl text-center shadow-elevated hover:shadow-elevated-lg transition-all card-3d group"
@@ -143,7 +143,7 @@ export default function Membership() {
         <h2 className="display-text text-lg text-sf-navy mb-4 text-center">Choose Your Tier</h2>
         
         <div className="space-y-3">
-          {TIERS.map((tier, index) => (
+          {TIERS.map((tier) => (
             <div
               key={tier.id}
               onClick={() => setSelectedTier(tier.id)}
@@ -153,7 +153,7 @@ export default function Membership() {
                   : 'shadow-elevated hover:shadow-elevated-lg'
               }`}
               style={{ 
-                ringColor: tier.accent,
+                
                 transitionDelay: `${index * 50}ms`
               }}
             >

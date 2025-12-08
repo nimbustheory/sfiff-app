@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Search, Plus, Edit2, Trash2, X, Download, Film, Star, Calendar } from 'lucide-react';
 import { useAdmin } from '../../contexts/AdminContext';
 import { tmdbApi } from '../../utils/tmdb';

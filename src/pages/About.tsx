@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Film, Award, Calendar, MapPin, Users, Mail, ExternalLink } from 'lucide-react';
+import { Film, MapPin, Users, Mail } from 'lucide-react';
 import { useAdmin } from '../contexts/AdminContext';
 
 // MapBox GL JS
@@ -13,7 +13,7 @@ export default function About() {
   const { venues } = useAdmin();
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<any>(null);
-  const [mapLoaded, setMapLoaded] = useState(false);
+  
   const [selectedVenue, setSelectedVenue] = useState<string | null>(null);
 
   useEffect(() => {
@@ -51,7 +51,7 @@ export default function About() {
     map.current.addControl(new window.mapboxgl.NavigationControl(), 'top-right');
 
     map.current.on('load', () => {
-      setMapLoaded(true);
+      
       addMarkers();
     });
   };

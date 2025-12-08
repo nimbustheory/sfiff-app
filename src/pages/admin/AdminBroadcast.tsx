@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Send, Users, Bell, Tag, Clock, CheckCircle, AlertCircle } from 'lucide-react';
+import { Send, Users, Bell, Tag, Clock, CheckCircle } from 'lucide-react';
 
 const SEGMENTS = [
   { id: 'all', name: 'All Users', count: 15420, icon: Users },

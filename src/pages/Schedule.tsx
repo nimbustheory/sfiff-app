@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { MapPin, Clock, Ticket, ChevronRight, X, Check, QrCode, Calendar, Star, Sparkles, Film } from 'lucide-react';
+import { MapPin, Clock, Ticket, ChevronRight, Check, QrCode, Calendar, Star, Sparkles, Film } from 'lucide-react';
 import { tmdbApi } from '../utils/tmdb';
 import type { Movie } from '../types';
 
