@@ -681,3 +681,85 @@ body {
   background: linear-gradient(to bottom, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.6) 100%);
   pointer-events: none;
 }
+
+/* ============================================
+   DESKTOP PRESENTATION WRAPPER
+   ============================================ */
+
+.desktop-wrapper {
+  min-height: 100vh;
+}
+
+/* On mobile, just pass through */
+@media (max-width: 767px) {
+  .desktop-wrapper-bg,
+  .desktop-panel {
+    display: none !important;
+  }
+}
+
+/* Desktop: full presentation layout */
+@media (min-width: 768px) {
+  .desktop-wrapper {
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+    position: relative;
+    background: linear-gradient(135deg, #0F0F0F 0%, #1A1A2E 50%, #0F0F0F 100%);
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  .desktop-wrapper-bg {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .desktop-panel {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 2rem 2.5rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .desktop-panel-left {
+    flex: 1;
+    max-width: 320px;
+    margin-left: auto;
+    padding-right: 3rem;
+  }
+
+  .desktop-panel-right {
+    flex: 1;
+    max-width: 280px;
+    margin-right: auto;
+    padding-left: 3rem;
+    padding-top: 2rem;
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
+
+  .desktop-app-content {
+    height: 100vh;
+    overflow-y: auto;
+    min-height: 0;
+  }
+
+  .desktop-app-frame {
+    position: relative;
+    z-index: 2;
+    width: 390px;
+    height: 100vh;
+    flex-shrink: 0;
+    overflow: hidden;
+    transform: translateZ(0);
+    box-shadow:
+      0 0 0 1px rgba(212, 175, 55, 0.15),
+      0 25px 50px -12px rgba(0, 0, 0, 0.5),
+      0 0 80px rgba(196, 70, 58, 0.1);
+  }
+}

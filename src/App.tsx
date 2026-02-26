@@ -4,6 +4,7 @@ import Navigation from './components/Navigation';
 import ConsumerHeader from './components/ConsumerHeader';
 import AdminNavigation from './components/AdminNavigation';
 import ScrollToTop from './components/ScrollToTop';
+import DesktopWrapper from './components/DesktopWrapper';
 
 // Consumer Pages
 import Home from './pages/Home';
@@ -46,10 +47,10 @@ function AppContent() {
     );
   }
 
-  // Consumer Layout - Mobile (Max 390px) with properly constrained navigation
+  // Consumer Layout - Mobile (390px max) with Desktop Presentation Wrapper
   return (
-    <div className="min-h-screen bg-sf-mist flex justify-center">
-      <div className="w-full max-w-[390px] relative">
+    <DesktopWrapper>
+      <div className="min-h-screen desktop-app-content bg-sf-mist" style={{ maxWidth: '390px', margin: '0 auto' }}>
         <ConsumerHeader />
         <div className="pb-20">
           <Routes>
@@ -64,10 +65,9 @@ function AppContent() {
             <Route path="/admin/*" element={<Home />} />
           </Routes>
         </div>
-        {/* Navigation is now positioned within the mobile container */}
         <Navigation />
       </div>
-    </div>
+    </DesktopWrapper>
   );
 }
 
