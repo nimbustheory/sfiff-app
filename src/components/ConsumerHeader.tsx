@@ -5,6 +5,7 @@ import { useAdmin } from '../contexts/AdminContext';
 export default function ConsumerHeader() {
   const [showNotifications, setShowNotifications] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
+  const [logoError, setLogoError] = useState(false);
   const { setIsAdmin } = useAdmin();
 
   const notifications = [
@@ -22,17 +23,16 @@ export default function ConsumerHeader() {
         <div className="flex items-center justify-between px-3 py-2">
           {/* Logo and Title */}
           <div className="flex items-center gap-2">
-            <img 
-              src="/SFIFF-logo.png" 
-              alt="SFIFF Logo" 
-              className="h-10 w-auto object-contain"
-              onError={(e) => {
-                // Fallback if logo not found
-                e.currentTarget.style.display = 'none';
-                e.currentTarget.nextElementSibling?.classList.remove('hidden');
-              }}
-            />
-            <div className="hidden text-sf-red font-bold text-xl">SF</div>
+            {!logoError ? (
+              <img
+                src="/SFIFF-logo.png"
+                alt="SFIFF Logo"
+                className="h-10 w-auto object-contain"
+                onError={() => setLogoError(true)}
+              />
+            ) : (
+              <div className="text-sf-red font-bold text-xl">SF</div>
+            )}
             <div className="flex flex-col leading-none">
               <span className="text-sf-navy font-bold text-xs tracking-wide">SAN FRANCISCO</span>
               <span className="text-sf-slate text-[10px] tracking-wide">International Film Festival</span>
@@ -45,12 +45,14 @@ export default function ConsumerHeader() {
               onClick={() => setIsAdmin(true)}
               className="p-2 rounded-full hover:bg-sf-fog transition-colors"
               title="Admin Mode"
+              aria-label="Switch to admin mode"
             >
               <Shield size={20} className="text-sf-navy" />
             </button>
             <button
               onClick={() => setShowNotifications(true)}
               className="relative p-2 rounded-full hover:bg-sf-fog transition-colors"
+              aria-label="Notifications"
             >
               <Bell size={20} className="text-sf-navy" />
               {unreadCount > 0 && (
@@ -62,6 +64,7 @@ export default function ConsumerHeader() {
             <button
               onClick={() => setShowSettings(true)}
               className="p-2 rounded-full hover:bg-sf-fog transition-colors"
+              aria-label="Settings"
             >
               <Settings size={20} className="text-sf-navy" />
             </button>
@@ -82,6 +85,7 @@ export default function ConsumerHeader() {
               <button
                 onClick={() => setShowNotifications(false)}
                 className="p-1 rounded-full hover:bg-sf-fog"
+                aria-label="Close notifications"
               >
                 <X size={20} className="text-sf-slate" />
               </button>

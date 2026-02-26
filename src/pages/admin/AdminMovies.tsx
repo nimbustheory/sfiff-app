@@ -315,7 +315,7 @@ export default function AdminMovies() {
                     min="0"
                     max="10"
                     value={formData.vote_average}
-                    onChange={(e) => setFormData({ ...formData, vote_average: parseFloat(e.target.value) })}
+                    onChange={(e) => setFormData({ ...formData, vote_average: parseFloat(e.target.value) || 0 })}
                     className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-sf-red/20 focus:border-sf-red"
                   />
                 </div>

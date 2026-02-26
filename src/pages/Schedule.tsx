@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import { MapPin, Clock, Ticket, ChevronRight, Check, QrCode, Calendar, Star, Sparkles, Film } from 'lucide-react';
 import { tmdbApi } from '../utils/tmdb';
 import type { Movie } from '../types';
@@ -40,6 +40,12 @@ export default function Schedule() {
   const [ticketCount, setTicketCount] = useState(2);
   const [ticketType, setTicketType] = useState<'general' | 'premium' | 'vip'>('general');
 
+  // Generate stable confirmation code once per purchase
+  const confirmationCode = useMemo(
+    () => `SF-${Math.random().toString(36).slice(2, 10).toUpperCase()}`,
+    [purchaseStep === 'confirm'] // eslint-disable-line react-hooks/exhaustive-deps
+  );
+
   // Generate dates for next 7 days
   const dates = Array.from({ length: 7 }, (_, i) => {
     const date = new Date();
@@ -54,13 +60,35 @@ export default function Schedule() {
   });
 
   useEffect(() => {
+    const fetchSchedule = async () => {
+      setLoading(true);
+      try {
+        const movies = await tmdbApi.getNowPlaying();
+        const venueNames = ['Castro Theatre', 'Roxie Theater', 'SFMOMA', 'Palace of Fine Arts', 'Yerba Buena Center'];
+        const scheduleItems: ScheduleItem[] = movies.slice(0, 8).map((movie, index) => ({
+          movie,
+          venue: venueNames[index % 5],
+          screen: `Screen ${(index % 3) + 1}`,
+          showtimes: [
+            { id: `${movie.id}-1`, time: '2:00 PM', price: 16, available: 45 },
+            { id: `${movie.id}-2`, time: '5:30 PM', price: 18, available: 23 },
+            { id: `${movie.id}-3`, time: '8:00 PM', price: 18, available: 67 },
+          ],
+        }));
+        setSchedule(scheduleItems);
+      } catch (error) {
+        console.error('Error fetching schedule:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
     fetchSchedule();
   }, [selectedDate]);
 
   // Scroll reveal
   useEffect(() => {
     if (!scheduleRef.current) return;
-    
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -77,29 +105,6 @@ export default function Schedule() {
 
     return () => observer.disconnect();
   }, [schedule]);
-
-  const fetchSchedule = async () => {
-    setLoading(true);
-    try {
-      const movies = await tmdbApi.getNowPlaying();
-      const venueNames = ['Castro Theatre', 'Roxie Theater', 'SFMOMA', 'Palace of Fine Arts', 'Yerba Buena Center'];
-      const scheduleItems: ScheduleItem[] = movies.slice(0, 8).map((movie, index) => ({
-        movie,
-        venue: venueNames[index % 5],
-        screen: `Screen ${(index % 3) + 1}`,
-        showtimes: [
-          { id: `${movie.id}-1`, time: '2:00 PM', price: 16, available: 45 },
-          { id: `${movie.id}-2`, time: '5:30 PM', price: 18, available: 23 },
-          { id: `${movie.id}-3`, time: '8:00 PM', price: 18, available: 67 },
-        ],
-      }));
-      setSchedule(scheduleItems);
-    } catch (error) {
-      console.error('Error fetching schedule:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const filteredSchedule = selectedVenue === 'all' 
     ? schedule 
@@ -354,7 +359,7 @@ export default function Schedule() {
                     
                     <div className="flex items-center justify-between mt-4 pt-3 border-t border-sf-charcoal/20">
                       <span className="text-xs opacity-70">Confirmation</span>
-                      <span className="font-mono text-sm">SF-{Math.random().toString(36).substr(2, 8).toUpperCase()}</span>
+                      <span className="font-mono text-sm">{confirmationCode}</span>
                     </div>
                   </div>
                 </div>

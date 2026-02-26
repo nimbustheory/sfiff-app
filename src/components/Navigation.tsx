@@ -74,6 +74,7 @@ export default function Navigation() {
             <button
               onClick={() => setShowMore(false)}
               className="absolute top-4 right-4 p-1 rounded-full hover:bg-sf-fog"
+              aria-label="Close menu"
             >
               <X size={20} className="text-sf-slate" />
             </button>

@@ -39,7 +39,7 @@ export default function About() {
   const initMap = () => {
     if (!mapContainer.current || !window.mapboxgl) return;
 
-    window.mapboxgl.accessToken = 'pk.eyJ1IjoibmltYnVzdGhlb3J5IiwiYSI6ImNtaWxkMTd2djFuZ3EzZHB4OWx3MmpoOGoifQ.ZTR7eI7r19f2ozCTqzWk4w';
+    window.mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_TOKEN;
 
     map.current = new window.mapboxgl.Map({
       container: mapContainer.current,

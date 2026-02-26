@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Star, Calendar, MapPin, Ticket, ChevronRight, Play, Award, Sparkles } from 'lucide-react';
+import { Star, Calendar, MapPin, Ticket, ChevronRight, Play, Award, Sparkles, Film } from 'lucide-react';
 import { tmdbApi, GENRES } from '../utils/tmdb';
 import type { Movie } from '../types';
 
@@ -10,6 +10,7 @@ export default function Home() {
   const [nowPlaying, setNowPlaying] = useState<Movie[]>([]);
   const [loading, setLoading] = useState(true);
   const [heroIndex, setHeroIndex] = useState(0);
+  const [logoError, setLogoError] = useState(false);
   const sectionsRef = useRef<(HTMLElement | null)[]>([]);
 
   useEffect(() => {
@@ -70,7 +71,9 @@ export default function Home() {
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4">
-        <div className="countdown-circle">5</div>
+        <div className="countdown-circle">
+          <Film size={24} />
+        </div>
         <p className="text-sf-slate text-sm">Loading the festival...</p>
       </div>
     );
@@ -79,16 +82,16 @@ export default function Home() {
   return (
     <div className="animate-fade-in relative">
       {/* Floating Logo - Fixed over hero */}
-      <div className="absolute top-8 left-0 right-0 z-50 flex justify-center pointer-events-none">
-        <img 
-          src="/SFIFF-logo.png" 
-          alt="SF International Film Festival" 
-          className="h-12 w-auto object-contain drop-shadow-2xl"
-          onError={(e) => {
-            e.currentTarget.style.display = 'none';
-          }}
-        />
-      </div>
+      {!logoError && (
+        <div className="absolute top-8 left-0 right-0 z-50 flex justify-center pointer-events-none">
+          <img
+            src="/SFIFF-logo.png"
+            alt="SF International Film Festival"
+            className="h-12 w-auto object-contain drop-shadow-2xl"
+            onError={() => setLogoError(true)}
+          />
+        </div>
+      )}
 
       {/* Subtle Fog Overlay */}
       <div className="fog-overlay opacity-30 pointer-events-none">
@@ -432,13 +435,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* CSS for hero zoom animation */}
-      <style>{`
-        @keyframes subtle-zoom {
-          from { transform: scale(1.05); }
-          to { transform: scale(1); }
-        }
-      `}</style>
     </div>
   );
 }

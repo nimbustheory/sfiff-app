@@ -27,13 +27,41 @@ export default function Films() {
   const genres = Object.entries(GENRES).map(([id, name]) => ({ id: Number(id), name }));
 
   useEffect(() => {
+    const fetchMovies = async () => {
+      setLoading(true);
+      try {
+        let data: Movie[] = [];
+        switch (category) {
+          case 'now_playing':
+            data = await tmdbApi.getNowPlaying();
+            break;
+          case 'popular':
+            data = await tmdbApi.getPopular();
+            break;
+          case 'top_rated':
+            data = await tmdbApi.getTopRated();
+            break;
+          case 'upcoming':
+            data = await tmdbApi.getUpcoming();
+            break;
+          case 'trending':
+            data = await tmdbApi.getTrending();
+            break;
+        }
+        setMovies(data);
+      } catch (error) {
+        console.error('Error fetching movies:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
     fetchMovies();
   }, [category]);
 
   // Scroll reveal for grid items
   useEffect(() => {
     if (!gridRef.current) return;
-    
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -50,35 +78,6 @@ export default function Films() {
 
     return () => observer.disconnect();
   }, [movies, searchResults]);
-
-  const fetchMovies = async () => {
-    setLoading(true);
-    try {
-      let data: Movie[] = [];
-      switch (category) {
-        case 'now_playing':
-          data = await tmdbApi.getNowPlaying();
-          break;
-        case 'popular':
-          data = await tmdbApi.getPopular();
-          break;
-        case 'top_rated':
-          data = await tmdbApi.getTopRated();
-          break;
-        case 'upcoming':
-          data = await tmdbApi.getUpcoming();
-          break;
-        case 'trending':
-          data = await tmdbApi.getTrending();
-          break;
-      }
-      setMovies(data);
-    } catch (error) {
-      console.error('Error fetching movies:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const handleSearch = async (query: string) => {
     setSearchQuery(query);
@@ -123,6 +122,7 @@ export default function Films() {
               <button
                 onClick={() => { setSearchQuery(''); setSearchResults([]); }}
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-white/50 hover:text-white"
+                aria-label="Clear search"
               >
                 <X size={18} />
               </button>
@@ -297,13 +297,14 @@ function MovieCard3D({ movie, index, onClick }: { movie: Movie; index: number; o
         )}
         
         {/* Heart on hover */}
-        <button 
+        <button
           className={`absolute top-1.5 right-1.5 p-1.5 rounded-full bg-black/50 backdrop-blur-sm transition-all z-10 ${
             isHovered ? 'opacity-100 scale-100' : 'opacity-0 scale-75'
           }`}
           onClick={(e) => {
             e.stopPropagation();
           }}
+          aria-label="Add to favorites"
         >
           <Heart size={12} className="text-white hover:fill-sf-coral hover:text-sf-coral transition-colors" />
         </button>
@@ -319,11 +320,6 @@ function MovieCard3D({ movie, index, onClick }: { movie: Movie; index: number; o
         </div>
       </div>
 
-      <style>{`
-        @keyframes shine-sweep {
-          to { transform: translateX(200%) rotate(25deg); }
-        }
-      `}</style>
     </div>
   );
 }
@@ -352,6 +348,7 @@ function MovieDetailModal({ movie, onClose }: { movie: MovieDetails; onClose: ()
           <button
             onClick={onClose}
             className="absolute top-4 right-4 p-2 rounded-full bg-black/50 backdrop-blur-sm text-white hover:bg-black/70 transition-colors z-10"
+            aria-label="Close movie details"
           >
             <X size={20} />
           </button>
