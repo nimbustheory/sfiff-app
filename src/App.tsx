@@ -23,11 +23,14 @@ import AdminShowtimes from './pages/admin/AdminShowtimes';
 import AdminTickets from './pages/admin/AdminTickets';
 import AdminEvents from './pages/admin/AdminEvents';
 import AdminBroadcast from './pages/admin/AdminBroadcast';
+import AdminVenues from './pages/admin/AdminVenues';
+import AdminMembers from './pages/admin/AdminMembers';
+import AdminSettings from './pages/admin/AdminSettings';
 
 function AppContent() {
   const { isAdmin } = useAdmin();
 
-  // Admin Layout - Full Width Desktop
+  // Admin Layout — takes over the full browser window (not inside phone frame)
   if (isAdmin) {
     return (
       <div className="flex min-h-screen bg-gray-100">
@@ -37,9 +40,12 @@ function AppContent() {
             <Route path="/admin" element={<AdminDashboard />} />
             <Route path="/admin/movies" element={<AdminMovies />} />
             <Route path="/admin/showtimes" element={<AdminShowtimes />} />
-            <Route path="/admin/tickets" element={<AdminTickets />} />
             <Route path="/admin/events" element={<AdminEvents />} />
+            <Route path="/admin/venues" element={<AdminVenues />} />
+            <Route path="/admin/tickets" element={<AdminTickets />} />
+            <Route path="/admin/members" element={<AdminMembers />} />
             <Route path="/admin/broadcast" element={<AdminBroadcast />} />
+            <Route path="/admin/settings" element={<AdminSettings />} />
             <Route path="*" element={<AdminDashboard />} />
           </Routes>
         </main>
@@ -47,26 +53,24 @@ function AppContent() {
     );
   }
 
-  // Consumer Layout - Mobile (390px max) with Desktop Presentation Wrapper
+  // Consumer Layout — rendered inside the DemoWrapper phone frame
   return (
     <DesktopWrapper>
-      <div className="min-h-screen desktop-app-content bg-sf-mist" style={{ maxWidth: '390px', margin: '0 auto' }}>
+      <div className="phone-scroll bg-sf-mist">
         <ConsumerHeader />
-        <div className="pb-20">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/films" element={<Films />} />
-            <Route path="/schedule" element={<Schedule />} />
-            <Route path="/events" element={<Events />} />
-            <Route path="/membership" element={<Membership />} />
-            <Route path="/festival" element={<Festival />} />
-            <Route path="/support" element={<Support />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/admin/*" element={<Home />} />
-          </Routes>
-        </div>
-        <Navigation />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/films" element={<Films />} />
+          <Route path="/schedule" element={<Schedule />} />
+          <Route path="/events" element={<Events />} />
+          <Route path="/membership" element={<Membership />} />
+          <Route path="/festival" element={<Festival />} />
+          <Route path="/support" element={<Support />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/admin/*" element={<Home />} />
+        </Routes>
       </div>
+      <Navigation />
     </DesktopWrapper>
   );
 }

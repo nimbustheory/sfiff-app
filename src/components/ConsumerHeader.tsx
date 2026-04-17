@@ -74,12 +74,12 @@ export default function ConsumerHeader() {
 
       {/* Notifications Modal */}
       {showNotifications && (
-        <div className="fixed inset-0 z-50 flex items-start justify-center pt-16 px-4">
-          <div 
+        <div className="absolute inset-0 z-[60] flex items-start justify-center pt-16 px-4">
+          <div
             className="absolute inset-0 bg-black/40 backdrop-blur-sm"
             onClick={() => setShowNotifications(false)}
           />
-          <div className="relative w-full max-w-[358px] bg-white rounded-2xl shadow-elevated-lg animate-fade-up overflow-hidden">
+          <div className="relative w-full bg-white rounded-2xl shadow-elevated-lg animate-fade-up overflow-hidden">
             <div className="flex items-center justify-between p-4 border-b border-sf-fog">
               <h2 className="font-bold text-sf-navy">Notifications</h2>
               <button
@@ -118,12 +118,12 @@ export default function ConsumerHeader() {
 
       {/* Settings Modal */}
       {showSettings && (
-        <div className="fixed inset-0 z-50 flex items-end justify-center">
-          <div 
+        <div className="absolute inset-0 z-[60] flex items-end justify-center">
+          <div
             className="absolute inset-0 bg-black/40 backdrop-blur-sm"
             onClick={() => setShowSettings(false)}
           />
-          <div className="relative w-full max-w-[390px] bg-white rounded-t-3xl shadow-elevated-lg animate-slide-up max-h-[85vh] overflow-y-auto">
+          <div className="relative w-full bg-white rounded-t-3xl shadow-elevated-lg animate-slide-up max-h-[85%] overflow-y-auto">
             {/* Handle */}
             <div className="flex justify-center pt-3 pb-2">
               <div className="w-10 h-1 bg-sf-slate/30 rounded-full" />
